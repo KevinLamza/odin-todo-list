@@ -12,26 +12,29 @@ if (process.env.NODE_ENV !== 'production') {
 
 // ---------------------- START YOUR CODE BELOW HERE
 
-const Todo = class {
-    constructor(title, description, dueDate, priority) {
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.priority = priority;
+(function() {
+    const Todo = class {
+        constructor(title, description, dueDate, priority) {
+            this.title = title;
+            this.description = description;
+            this.dueDate = dueDate;
+            this.priority = priority;
+        }
     }
-}
 
-const todoList = [];
+    // DIFFERENCE BETWEEN CREATE AND ADD
 
-function addTodo(title, description, dueDate, priority) {
-    let todo = new Todo(title, description, dueDate, priority);
-    todoList.push(todo);
-}
 
-const todo1 = new Todo("My title", "My description", "05-08-2024", "1");
-const todo2 = new Todo("My title 2", "My description 2", "05-10-2024", "2");
-const todo3 = new Todo("My title 3", "My description 3", "05-12-2024", "3");
+    const todoList = [];
 
-console.log(todo1);
-console.log(todo2);
-console.log(todo3);
+    function addTodo(title, description, dueDate, priority) {
+        let todo = new Todo(title, description, dueDate, priority);
+        todoList.push(todo);
+    }
+
+    addTodo("My title", "My description", "05-08-2024", "1");
+    addTodo("My title 2", "My description 2", "05-10-2024", "2");
+    addTodo("My title 3", "My description 3", "05-12-2024", "3");
+
+    console.log(todoList);
+})();
