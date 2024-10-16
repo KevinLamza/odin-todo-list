@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // ---------------------- START YOUR CODE BELOW HERE
 
-const allTodos = class {
+const Todo = class {
     constructor(title, description, dueDate, priority) {
         this.title = title;
         this.description = description;
@@ -20,3 +20,7 @@ const allTodos = class {
         this.priority = priority;
     }
 }
+
+const todo1 = new Todo("My title", "My description", "05-08-2024", "1");
+const todo2 = new Todo("My title 2", "My description 2", "05-10-2024", "2");
+const todo3 = new Todo("My title 3", "My description 3", "05-12-2024", "3");
