@@ -11,3 +11,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // ---------------------- START YOUR CODE BELOW HERE
+
+const allTodos = class {
+    constructor(title, description, dueDate, priority) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+    }
+}
