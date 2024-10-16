@@ -21,6 +21,17 @@ const Todo = class {
     }
 }
 
+const todoList = [];
+
+function addTodo(title, description, dueDate, priority) {
+    let todo = new Todo(title, description, dueDate, priority);
+    todoList.push(todo);
+}
+
 const todo1 = new Todo("My title", "My description", "05-08-2024", "1");
 const todo2 = new Todo("My title 2", "My description 2", "05-10-2024", "2");
 const todo3 = new Todo("My title 3", "My description 3", "05-12-2024", "3");
+
+console.log(todo1);
+console.log(todo2);
+console.log(todo3);
