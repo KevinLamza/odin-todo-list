@@ -18,7 +18,7 @@ const Todo = class {
     #dueDate;
     #priority;
     #project;
-    #myID;
+    #todoID;
     static #ID = 0;
     constructor(title, description, dueDate, priority, project) {
         this.#title = title;
@@ -26,7 +26,7 @@ const Todo = class {
         this.#dueDate = dueDate;
         this.#priority = priority;
         this.#project = project;
-        this.#myID = Todo.#ID++;
+        this.#todoID = Todo.#ID++;
     }
 
     getTitle() {
@@ -70,14 +70,14 @@ const Todo = class {
     }
 
     getID() {
-        return this.#myID;
+        return this.#todoID;
     }
 }
 
 const Project = class {
     #title;
     #myTodos;
-    #myID;
+    #projectID;
     static #ID = 0;
     static #projectList = [];
     static getProjectList() {
@@ -87,7 +87,7 @@ const Project = class {
     constructor(title) {
         this.#title = title;
         this.#myTodos = [];
-        this.#myID = Project.#ID++;
+        this.#projectID = Project.#ID++;
         Project.#projectList.push(this);
     }
 
@@ -112,6 +112,14 @@ const Project = class {
             }
         }
     }
+
+    deleteProject() {
+        for(let i = 0; i < Project.getProjectList().length; i++) {
+            if (this.#projectID === Project.getProjectList()[i].#projectID) {
+                Project.getProjectList().splice(i, 1);
+            }
+        }
+    }
 }
 
 const project1 = new Project("Project 1");
@@ -122,6 +130,7 @@ project3.addTodo("My Title", "My description", "My due date", "My Priority");
 project3.addTodo("My Title", "My description", "My due date", "My Priority");
 project3.addTodo("My Title", "My description", "My due date", "My Priority");
 project3.deleteTodo(0);
+project2.deleteProject();
 
 
 console.log(Project.getProjectList());
