@@ -18,30 +18,54 @@ const Todo = class {
     #description;
     #dueDate;
     #priority;
-    #subtaskOf
-    constructor(title, description, dueDate, priority, subtaskOf) {
+    #project;
+    constructor(title, description, dueDate, priority, project) {
         this.#title = title;
         this.#description = description;
         this.#dueDate = dueDate;
         this.#priority = priority;
-        this.#subtaskOf = subtaskOf;
+        this.#project = project;
     }
 
-    // getTodo() {
-    //     return this;
-    // }
+    getTitle() {
+        return this.#title;
+    }
 
-    // editTodo(newTitle, newDescription, newDueDate, newPriority, newSubtaskOf) {
-    //     this.#title = newTitle;
-    //     this.#description = newDescription;
-    //     this.#dueDate = newDueDate;
-    //     this.#priority = newPriority;
-    //     this.#subtaskOf = newSubtaskOf;
-    // }
+    editTitle(newTitle) {
+        this.#title = newTitle;
+    }
 
-    // addTodoToProject(project = "Default") {
-    //     todoList.push(this);
-    // }
+    getDescription() {
+        return this.#description;
+    }
+
+    editDescription(newDescription) {
+        this.#description = newDescription;
+    }
+
+    getDueDate() {
+        return this.#dueDate;
+    }
+
+    editDueDate(newDueDate) {
+        this.#dueDate = newDueDate;
+    }
+
+    getPriority() {
+        return this.#priority;
+    }
+
+    editPriority(newPriority) {
+        this.#priority = newPriority;
+    }
+
+    getProject() {
+        return this.#Project;
+    }
+
+    editProject(newProject) {
+        this.#project = newProject
+    }
 }
 
 const ProjectList = class {
