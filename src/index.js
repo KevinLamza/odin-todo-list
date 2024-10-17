@@ -79,11 +79,16 @@ const Project = class {
     #myTodos;
     #myID;
     static #ID = 0;
+    static #projectList = [];
+    static getProjectList() {
+        return Project.#projectList;
+    }
 
     constructor(title) {
         this.#title = title;
         this.#myTodos = [];
         this.#myID = Project.#ID++;
+        Project.#projectList.push(this);
     }
 
     getTitle() {
@@ -107,7 +112,6 @@ const Project = class {
             }
         }
     }
-
 }
 
 const project1 = new Project("Project 1");
@@ -120,6 +124,4 @@ project3.addTodo("My Title", "My description", "My due date", "My Priority");
 project3.deleteTodo(0);
 
 
-console.log(project1);
-console.log(project2);
-console.log(project3);
+console.log(Project.getProjectList());
