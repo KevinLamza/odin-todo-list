@@ -12,29 +12,52 @@ if (process.env.NODE_ENV !== 'production') {
 
 // ---------------------- START YOUR CODE BELOW HERE
 
-(function() {
-    const Todo = class {
-        constructor(title, description, dueDate, priority) {
-            this.title = title;
-            this.description = description;
-            this.dueDate = dueDate;
-            this.priority = priority;
-        }
+
+const Todo = class {
+    #title;
+    #description;
+    #dueDate;
+    #priority;
+    #subtaskOf
+    constructor(title, description, dueDate, priority, subtaskOf) {
+        this.#title = title;
+        this.#description = description;
+        this.#dueDate = dueDate;
+        this.#priority = priority;
+        this.#subtaskOf = subtaskOf;
     }
 
-    // DIFFERENCE BETWEEN CREATE AND ADD
-
-
-    const todoList = [];
-
-    function addTodo(title, description, dueDate, priority) {
-        let todo = new Todo(title, description, dueDate, priority);
-        todoList.push(todo);
+    getTodo() {
+        return this;
     }
 
-    addTodo("My title", "My description", "05-08-2024", "1");
-    addTodo("My title 2", "My description 2", "05-10-2024", "2");
-    addTodo("My title 3", "My description 3", "05-12-2024", "3");
+    editTodo(title, description, dueDate, priority, subtaskOf) {
+        this.#title = title;
+        this.#description = description;
+        this.#dueDate = dueDate;
+        this.#priority = priority;
+        this.#subtaskOf = subtaskOf;
+    }
 
-    console.log(todoList);
-})();
+    addTodo() {
+        this.push(todoList);
+    }
+}
+
+const todoList = [];
+
+// addTodo("My title", "My description", "05-08-2024", "1");
+// addTodo("My title 2", "My description 2", "05-10-2024", "2");
+// addTodo("My title 3", "My description 3", "05-12-2024", "3");
+
+const todo1 = new Todo("Title 1", "Description 1", "DueDate 1", "Priority 1", "Project 1");
+const todo2 = new Todo("Title 2", "Description 2", "DueDate 2", "Priority 2", "Project 2");
+const todo3 = new Todo("Title 3", "Description 3", "DueDate 3", "Priority 3", "Project 3");
+
+console.log(todo1.getTodo());
+console.log(todo2.getTodo());
+console.log(todo3.getTodo());
+
+todo1.editTodo("New Title1", "Description 1", "DueDate 1", "Priority 1", "Project 1");
+
+console.log(todo1.getTodo());
