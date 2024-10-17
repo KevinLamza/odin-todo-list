@@ -12,20 +12,19 @@ if (process.env.NODE_ENV !== 'production') {
 
 // ---------------------- START YOUR CODE BELOW HERE
 
+
 const Todo = class {
     #title;
     #description;
     #dueDate;
     #priority;
     #project;
-    static #ID = 0;
     constructor(title, description, dueDate, priority, project) {
         this.#title = title;
         this.#description = description;
         this.#dueDate = dueDate;
         this.#priority = priority;
         this.#project = project;
-        Todo.#ID++;
     }
 
     getTitle() {
@@ -69,39 +68,52 @@ const Todo = class {
     }
 }
 
-const Project = class {
-    #title;
-    #myTodos;
-    static #ID = 0;
+const ProjectList = class {
+    #projectList;
 
-    constructor(title) {
-        this.#title = title;
-        this.#myTodos = [];
-        Project.#ID++;
+    constructor() {
+        this.#projectList = [];
+        this.#projectList[0] = "Default"
+        this.#projectList.push("test");
     }
 
-    getTitle() {
-        return this.#title;
+    getProject(i) {
+        return this.#projectList[i];
     }
 
-    editTitle(newTitle) {
-        this.#title = newTitle;
+    editProjectTitle(oldTitle, newTitle) {
+        let index = this.#projectList.indexOf(oldTitle);
+        this.#projectList[index] = newTitle;
     }
 
-    addTodo(title, description, dueDate, priority) {
-        let todo = new Todo(title, description, dueDate, priority, this.#title)
-        this.#myTodos.push(todo);
+    addProjectToList(title) {
+        this.#projectList.push(title);
+    }
+
+    deleteProjectFromList(title) {
+        this.#projectList = this.#projectList.filter(function(item) {
+            return item !== title
+        })
+    }
+
+    getAllProjects() {
+        return this.#projectList
     }
 
 }
 
-const project1 = new Project("Project 1");
-const project2 = new Project("Project 2");
-const project3 = new Project("Project 3");
-
-project3.addTodo("My Title", "My description", "My due date", "My Priority");
 
 
-console.log(project1);
-console.log(project2);
-console.log(project3);
+const myList = new ProjectList("myList");
+
+const todo1 = new Todo("Title 1", "Description 1", "DueDate 1", "Priority 1", "Project 1");
+const todo2 = new Todo("Title 2", "Description 2", "DueDate 2", "Priority 2", "Project 2");
+const todo3 = new Todo("Title 3", "Description 3", "DueDate 3", "Priority 3", "Project 3");
+
+myList.addProjectToList("Project 1");
+myList.addProjectToList("Project 2");
+
+myList.editProjectTitle("Project 2", "Project 3");
+myList.deleteProjectFromList("Project 1");
+
+console.log(myList.getAllProjects());
