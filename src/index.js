@@ -44,24 +44,35 @@ const Todo = class {
     }
 }
 
-const Project = class {
-    static #projects = [];
-    #title;
+const ProjectList = class {
+    #projectList;
 
-    constructor(title) {
-        this.#title = title;
+    constructor(myList) {
+        this.title = myList;
+        this.#projectList = [];
     }
 
-    getProject() {
-        return this;
+    getProject(i) {
+        return this.#projectList[i];
     }
 
-    editProject(newTitle) {
-        this.#title = newTitle;
+    editProject(oldTitle, newTitle) {
+        let index = this.#projectList.indexOf(oldTitle);
+        this.#projectList[index] = newTitle;
     }
 
-    addProjectToList() {
-        #projects.push(this);
+    addProjectToList(title) {
+        this.#projectList.push(title);
+    }
+
+    deleteProjectFromList(title) {
+        this.#projectList = this.#projectList.filter(function(item) {
+            return item !== title
+        })
+    }
+
+    getAllProjects() {
+        return this.#projectList
     }
 
 }
@@ -70,18 +81,30 @@ const Project = class {
 // addTodo("My title 2", "My description 2", "05-10-2024", "2");
 // addTodo("My title 3", "My description 3", "05-12-2024", "3");
 
+const myList = new ProjectList("myList");
+
 const todo1 = new Todo("Title 1", "Description 1", "DueDate 1", "Priority 1", "Project 1");
 const todo2 = new Todo("Title 2", "Description 2", "DueDate 2", "Priority 2", "Project 2");
 const todo3 = new Todo("Title 3", "Description 3", "DueDate 3", "Priority 3", "Project 3");
 
-console.log(todo1.getTodo());
-console.log(todo2.getTodo());
-console.log(todo3.getTodo());
+// console.log(todo1.getTodo());
+// console.log(todo2.getTodo());
+// console.log(todo3.getTodo());
 
-todo1.editTodo("New Title1", "Description 1", "DueDate 1", "Priority 1", "Project 1");
+// todo1.editTodo("New Title1", "Description 1", "DueDate 1", "Priority 1", "Project 1");
 
-console.log(todo1.getTodo());
+// console.log(todo1.getTodo());
 
-todo1.addTodo();
+// todo1.addTodo();
 
-console.log(todoList);
+// console.log(todoList);
+
+myList.addProjectToList("Project 1");
+myList.addProjectToList("Project 2");
+
+myList.editProject("Project 2", "Project 3");
+myList.deleteProjectFromList("Project 1");
+
+console.log(myList.getAllProjects());
+
+
