@@ -31,20 +31,40 @@ const Todo = class {
         return this;
     }
 
-    editTodo(title, description, dueDate, priority, subtaskOf) {
-        this.#title = title;
-        this.#description = description;
-        this.#dueDate = dueDate;
-        this.#priority = priority;
-        this.#subtaskOf = subtaskOf;
+    editTodo(newTitle, newDescription, newDueDate, newPriority, newSubtaskOf) {
+        this.#title = newTitle;
+        this.#description = newDescription;
+        this.#dueDate = newDueDate;
+        this.#priority = newPriority;
+        this.#subtaskOf = newSubtaskOf;
     }
 
-    addTodo() {
-        this.push(todoList);
+    addTodoToList() {
+        todoList.push(this);
     }
 }
 
-const todoList = [];
+const Project = class {
+    static #projects = [];
+    #title;
+
+    constructor(title) {
+        this.#title = title;
+    }
+
+    getProject() {
+        return this;
+    }
+
+    editProject(newTitle) {
+        this.#title = newTitle;
+    }
+
+    addProjectToList() {
+        #projects.push(this);
+    }
+
+}
 
 // addTodo("My title", "My description", "05-08-2024", "1");
 // addTodo("My title 2", "My description 2", "05-10-2024", "2");
@@ -61,3 +81,7 @@ console.log(todo3.getTodo());
 todo1.editTodo("New Title1", "Description 1", "DueDate 1", "Priority 1", "Project 1");
 
 console.log(todo1.getTodo());
+
+todo1.addTodo();
+
+console.log(todoList);
