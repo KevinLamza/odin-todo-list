@@ -23,19 +23,21 @@ Todo.createProject("Test");
 Todo.createProject("Test");
 Todo.logAllProjects();
 
-// let test1 = new Todo("Title 1", "Beschreibung 1", "03/03/2923", 3);
-// let test2 = new Todo("Title 2", "Beschreibung 2", "03/03/2923", 2);
-// let test3 = new Todo("Title 3", "Beschreibung 3", "03/03/2923", 1);
+let test1 = new Todo("Title 1", "Beschreibung 1", "03/03/2923", 3);
+let test2 = new Todo("Title 2", "Beschreibung 2", "03/03/2923", 2);
+let test3 = new Todo("Title 3", "Beschreibung 3", "03/03/2923", 1);
 
 // test1.setDescription("hey");
 // test3.setCompleted();
 
-// test1.logMe();
-// test2.logMe();
-// test3.logMe();
+test1.logMe();
+test2.logMe();
+test3.logMe();
 
 Todo.createTodo("Title 1", "Beschreibung 1", "03/03/2923", 3, 0);
 Todo.createTodo("Title 2", "Beschreibung 2", "03/03/2923", 2, 7);
 Todo.createTodo("Title 3", "Beschreibung 3", "03/03/2923", 1, 1);
 
 Todo.logAllTodos();
+
+Todo.saveToStorage();

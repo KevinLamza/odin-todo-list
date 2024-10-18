@@ -5,13 +5,13 @@ class Todo {
     static #allTodos = {};
     static #allProjects = {};
 
-    #myTitle;
-    #myDescription;
-    #myDueDate;
-    #myPriority;
-    #myCompleted;
-    #myTodoID;
-    #myProjectID;
+    // #myTitle;
+    // #myDescription;
+    // #myDueDate;
+    // #myPriority;
+    // #myCompleted;
+    // #myTodoID;
+    // #myProjectID;
 
     // STATIC METHODS
     static init() {
@@ -51,7 +51,7 @@ class Todo {
             projectID = 0;
         }
         let todo = new Todo (title, description, dueDate, priority, projectID);
-        this.#allTodos[todo.#myTodoID] = todo;
+        this.#allTodos[todo.myTodoID] = todo;
     }
 
     static deleteTodo(todoID) {
@@ -66,81 +66,95 @@ class Todo {
         console.log(this.#allTodos);
     }
 
-    static isDateValid(date) {
+    static #isDateValid(date) {
         let checkDate = new Date(date);
         return checkDate.getTime() === checkDate.getTime();
     }
 
+    // static #stringify() {
+    //     return JSON.stringify({['#width']: this.#width,['#height']: this.#height})
+    // }
+
+    static saveToStorage() {
+        let string = this.#allTodos;
+        Object.assign(string, this.#allTodos)
+        console.log(string);
+        string = JSON.stringify(string);
+        console.log(string);
+        string = JSON.parse(string);
+        console.log(string);
+    }
+
     constructor(title, description, dueDate, priority, projectID) {
-        this.#myTitle = title;
-        this.#myDescription = description;
-        this.#myDueDate = dueDate;
-        this.#myPriority = priority;
-        this.#myCompleted = false;
-        this.#myTodoID = Todo.#todoCounter++;
-        this.#myProjectID = projectID; // <- muss noch angepasst werden; default project sollte 0 sein und auch existieren
+        this.myTitle = title;
+        this.myDescription = description;
+        this.myDueDate = dueDate;
+        this.myPriority = priority;
+        this.myCompleted = false;
+        this.myTodoID = Todo.#todoCounter++;
+        this.myProjectID = projectID; // <- muss noch angepasst werden; default project sollte 0 sein und auch existieren
     }
 
     getTitle() {
-        return this.#myTitle;
+        return this.myTitle;
     }
 
     setTitle(newTitle) {
         if (typeof newTitle === "string") {
-            this.#myTitle = newTitle;
+            this.myTitle = newTitle;
         } else {
             console.log("Invalid input - needs to be a string!")
         }
     }
 
     getDescription() {
-        return this.#myDescription;
+        return this.myDescription;
     }
     
     setDescription(newDescription) {
         if (typeof newDescription === "string") {
-            this.#myDescription = newDescription;
+            this.myDescription = newDescription;
         } else {
             console.log("Invalid input - needs to be a string!")
         }
     }
 
     getDueDate() {
-        return this.#myDueDate;
+        return this.myDueDate;
     }
     
     setDueDate(newDueDate) {
-        if (Todo.isDateValid(newDueDate === true)) {
-            this.#myDueDate = new Date(newDueDate);
+        if (Todo.#isDateValid(newDueDate === true)) {
+            this.myDueDate = new Date(newDueDate);
         } else {
             console.log("Invalid date!")
         }
     }
 
     getPriority() {
-        return this.#myPriority;
+        return this.myPriority;
     }
     
     setPriority(newPriority) {
         if ((newPriority === 4) || (newPriority === 3) || (newPriority === 2) || (newPriority === 1)) {
-            this.#myPriority = newPriority;
+            this.myPriority = newPriority;
         } else {
             console.log("Invalid input - needs to be an integer from 1 to 4!")
         }
     }
 
     getCompleted() {
-        return this.#myCompleted;
+        return this.myCompleted;
     }
     
     setCompleted() {
-        this.#myCompleted = !this.#myCompleted;
+        this.myCompleted = !this.myCompleted;
     }
 
     // getMyTodoID() {}
     
     getProjectID() {
-        return this.#myProjectID;
+        return this.myProjectID;
     }
     
     setProjectID(newDescription) {
