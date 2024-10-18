@@ -5,14 +5,6 @@ class Todo {
     static #allTodos = {};
     static #allProjects = {};
 
-    // #myTitle;
-    // #myDescription;
-    // #myDueDate;
-    // #myPriority;
-    // #myCompleted;
-    // #myTodoID;
-    // #myProjectID;
-
     // STATIC METHODS
     static init() {
         this.createProject("Default");
@@ -52,6 +44,7 @@ class Todo {
         }
         let todo = new Todo (title, description, dueDate, priority, projectID);
         this.#allTodos[todo.myTodoID] = todo;
+        return todo;
     }
 
     static deleteTodo(todoID) {
@@ -70,10 +63,6 @@ class Todo {
         let checkDate = new Date(date);
         return checkDate.getTime() === checkDate.getTime();
     }
-
-    // static #stringify() {
-    //     return JSON.stringify({['#width']: this.#width,['#height']: this.#height})
-    // }
 
     static saveToStorage() {
         let string = this.#allTodos;
@@ -95,11 +84,11 @@ class Todo {
         this.myProjectID = projectID; // <- muss noch angepasst werden; default project sollte 0 sein und auch existieren
     }
 
-    getTitle() {
+    get title() {
         return this.myTitle;
     }
 
-    setTitle(newTitle) {
+    set title(newTitle) {
         if (typeof newTitle === "string") {
             this.myTitle = newTitle;
         } else {
@@ -107,11 +96,11 @@ class Todo {
         }
     }
 
-    getDescription() {
+    get description() {
         return this.myDescription;
     }
     
-    setDescription(newDescription) {
+    set description(newDescription) {
         if (typeof newDescription === "string") {
             this.myDescription = newDescription;
         } else {
@@ -119,11 +108,11 @@ class Todo {
         }
     }
 
-    getDueDate() {
+    get dueDate() {
         return this.myDueDate;
     }
     
-    setDueDate(newDueDate) {
+    set dueDate(newDueDate) {
         if (Todo.#isDateValid(newDueDate === true)) {
             this.myDueDate = new Date(newDueDate);
         } else {
@@ -131,11 +120,11 @@ class Todo {
         }
     }
 
-    getPriority() {
+    get priority() {
         return this.myPriority;
     }
     
-    setPriority(newPriority) {
+    set priority(newPriority) {
         if ((newPriority === 4) || (newPriority === 3) || (newPriority === 2) || (newPriority === 1)) {
             this.myPriority = newPriority;
         } else {
@@ -143,21 +132,25 @@ class Todo {
         }
     }
 
-    getCompleted() {
+    get completed() {
         return this.myCompleted;
     }
     
-    setCompleted() {
-        this.myCompleted = !this.myCompleted;
+    set completed(value) {
+        if (typeof value === "boolean") {
+        this.myCompleted = value;
+        } else {
+            console.log("Invalid input - either true or false requiered!")
+        }
     }
 
     // getMyTodoID() {}
     
-    getProjectID() {
+    get projectID() {
         return this.myProjectID;
     }
     
-    setProjectID(newDescription) {
+    set projectID(newDescription) {
         // logic tbd
     }
 
