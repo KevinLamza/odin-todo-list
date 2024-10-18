@@ -65,13 +65,32 @@ class Todo {
     }
 
     static saveToStorage() {
-        let string = this.#allTodos;
-        Object.assign(string, this.#allTodos)
-        console.log(string);
-        string = JSON.stringify(string);
-        console.log(string);
-        string = JSON.parse(string);
-        console.log(string);
+        let todoCounter = this.#todoCounter;
+        todoCounter = JSON.stringify(todoCounter);
+        localStorage.setItem("todoCounter", todoCounter);
+
+        let projectCounter = this.#projectCounter;
+        projectCounter = JSON.stringify(projectCounter);
+        localStorage.setItem("projectCounter", projectCounter);
+
+        let todoData = this.#allTodos;
+        todoData = JSON.stringify(todoData);
+        localStorage.setItem("todoData", todoData);
+
+        let projectData = this.#allProjects;
+        projectData = JSON.stringify(projectData);
+        localStorage.setItem("projectData", projectData);
+    }
+
+    static loadFromStorage() {
+        this.#todoCounter = JSON.parse(localStorage.getItem("todoCounter"));
+        this.#projectCounter = JSON.parse(localStorage.getItem("projectCounter"));
+        this.#allTodos = JSON.parse(localStorage.getItem("todoData"));
+        this.#allProjects = JSON.parse(localStorage.getItem("projectData"));
+    }
+
+    static #clearStorage() {
+        localStorage.clear();
     }
 
     constructor(title, description, dueDate, priority, projectID) {

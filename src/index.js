@@ -41,6 +41,8 @@ let test3 = Todo.createTodo("Title 3", "Beschreibung 3", "03/03/2923", 1, 1);
 // console.log(test1);
 test1.title = "New Title";
 
-Todo.logAllTodos();
+// Todo.logAllTodos();
 
-// Todo.saveToStorage();
+Todo.saveToStorage();
+Todo.loadFromStorage();
+Todo.logAllTodos();
