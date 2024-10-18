@@ -7,7 +7,25 @@ class Todo {
 
     // STATIC METHODS
     static init() {
-        this.createProject("Default");
+        this.loadFromStorage();
+        if (this.#todoCounter == null) {
+            this.#todoCounter = 0;
+            console.log("Couldn't load todoCounter -> reset to 0");
+        }
+        if (this.#projectCounter == null) {
+            this.#projectCounter = 0;
+            console.log("Couldn't load projectCounter -> reset to 0");
+        }
+        if (this.#allTodos == null) {
+            this.#allTodos = {};
+            console.log("Couldn't load todos!");
+        }
+        if (this.#allProjects == null) {
+            this.#allProjects = {};
+            console.log("Couldn't load projects!");
+            this.createProject("Default");
+        }
+        // this.createProject("Default");
     }
 
     static createProject(title) {
@@ -89,8 +107,12 @@ class Todo {
         this.#allProjects = JSON.parse(localStorage.getItem("projectData"));
     }
 
-    static #clearStorage() {
+    static reset() {
         localStorage.clear();
+        this.#todoCounter = 0;
+        this.#projectCounter = 0;
+        this.#allTodos = {};
+        this.#allProjects = {};
     }
 
     constructor(title, description, dueDate, priority, projectID) {

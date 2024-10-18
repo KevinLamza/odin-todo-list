@@ -14,6 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 import { Todo } from "./classTodo.js" ;
 
+Todo.reset();
 Todo.init();
 
 Todo.createProject("Test");
