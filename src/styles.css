@@ -136,10 +136,6 @@ p, h1, h2, h3, h4, h5, h6 {
     background-color: rgb(238, 203, 49);
 }
 
-.mainContent > .lists {
-    
-}
-
 .lists > ul {
     list-style: none;
     margin: 0;
@@ -147,7 +143,36 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 ul > li {
-    list-style: none;
+    list-style-type: disc;
     margin: 0;
-    padding: 0;
+    margin-left: 22px;
+    font-size: 20px;
+}
+
+.subBulletPoint {
+    font-size: 16px;
+    list-style-type: none;
+}
+
+.bulletPoint:hover {
+    font-weight: 600;
+}
+
+.markComplete{
+    background-color: rgb(205, 205, 247);
+    font-size: 14px;
+}
+
+.markUncomplete{
+    background-color: pink;
+    font-size: 14px;
+}
+
+.markComplete:hover{
+    background-color: lightgreen;
+    font-size: 14px;
+}
+
+li.bulletPoint.completed {
+    color: grey;
 }

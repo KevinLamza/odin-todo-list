@@ -41,11 +41,24 @@
                 <div class="listsTitle">My Projects / My Todos</div>
                 <div class="lists">
                     <ul>
-                        <li>Todo 1</li>
-                        <li>Todo 2</li>
-                        <li>Todo 3</li>
-                        <li>Todo 4</li>
-                        <li>Todo 5</li>
+                        <li class="bulletPoint uncompleted">Todo 1</li>
+                        <li class="bulletPoint">Todo 2</li>
+                        <ul>
+                            <li class="subBulletPoint">Beispielbeschreibung</li>
+                            <li class="subBulletPoint">Due until:</li>
+                            <li class="subBulletPoint">Priority: 1</li>
+                            <li class="subBulletPoint"><button class="markComplete">Mark complete</button></li>
+                        </ul>
+                        <li class="bulletPoint completed">Todo 3</li>
+                        <ul>
+                            <li class="subBulletPoint">Beispielbeschreibung</li>
+                            <li class="subBulletPoint">Due until:</li>
+                            <li class="subBulletPoint">Priority: 1</li>
+                            <li class="subBulletPoint"><button class="markUncomplete">Mark uncompleted</button></li>
+                        </ul>
+                        <li class="bulletPoint">Todo 4</li>
+                        <li class="bulletPoint">Todo 5</li>
+                        <li class="bulletPoint">Todo 6</li>
                     </ul>
                 </div>
             </div>
