@@ -19,35 +19,41 @@
         <div class="mainTitle">Todo List Application</div>
         <div class="mainContent">
             <div class="leftColumn">
-                <div class="settingsTitle">Settings</div>
+                <div class="settingsTitle">Filters</div>
                 <div class="settings">
-                    <button>Show projects</button>
-                    <button>Show todos</button>
+                    <button id="showProjectsButton">Show projects</button>
+                    <button id="showTodosButton">Show todos</button>
                     <div class="settingsButtons">
                         <div class="firstFilter">
-                            <button>Show All</button>
-                            <button>Show Completed</button>
-                            <button>Show Uncompleted</button>
+                            <button id="showAllButton">Show All</button>
+                            <button id="showCompletedButton">Show Completed</button>
+                            <button id="showUncompletedButton">Show Uncompleted</button>
                         </div>
                         <div class="secondFilter">
-                            <button>Project 1</button>
-                            <button>Project 2</button>
-                            <button>Project 3</button> 
+                            <button id="project1Button">Project 1</button>
+                            <button id="project2Button">Project 2</button>
+                            <button id="project3Button">Project 3</button> 
                         </div>
                     </div>
                 </div>
             </div>
             <div class="rightColumn">
-                <div class="listsTitle">My Projects / My Todos</div>
+                <div class="listsTitle"><span id="listTitle">My Projects / My Todos</span>
+                    <button class="create" id="createProject">Create Project</button>
+                    <button class="create" id="createTodo">Create Todo</button>
+                </div>
                 <div class="lists">
                     <ul>
-                        <li class="bulletPoint uncompleted">Todo 1</li>
-                        <li class="bulletPoint">Todo 2</li>
+                        <li class="bulletPoint uncompleted" id="todo1">Todo 1</li>
+                        <li class="bulletPoint" id="todo2">Todo 2</li>
                         <ul>
-                            <li class="subBulletPoint">Beispielbeschreibung</li>
+                            <li class="subBulletPoint" id="todo1Description">Beispielbeschreibung</li>
                             <li class="subBulletPoint">Due until:</li>
                             <li class="subBulletPoint">Priority: 1</li>
-                            <li class="subBulletPoint"><button class="markComplete">Mark complete</button></li>
+                            <li class="subBulletPoint">
+                                <button class="markComplete" id="todo1MarkComplete">Mark complete</button>
+                                <button class="delete" id="todo1Delete">Delete</button>
+                            </li>
                         </ul>
                         <li class="bulletPoint completed">Todo 3</li>
                         <ul>
