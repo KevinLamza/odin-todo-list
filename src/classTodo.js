@@ -8,6 +8,8 @@ class Todo {
     static #allTodos = {};
     static #allProjects = {};
 
+    static #DOM = {};
+
     // STATIC METHODS
     // init(): check first on start up if all properties can be loaded from local storage
     // if no (= null), then reset them to zero / empty object respectively
@@ -30,6 +32,8 @@ class Todo {
             console.log("Couldn't load projects!");
             this.createProject("Default");
         }
+        this.#DOM = this.cacheDOM();
+        this.staticButtonLogic();
         this.render();
 
         // only for debugging purposes, can be removed
@@ -213,7 +217,7 @@ class Todo {
         this.createTodo("Title 6", "Description 6", "10/10/1010", 2, 3 );
     }
 
-    static filterTodos(projectFlag, completedFlag) {
+    static #filterTodos(projectFlag, completedFlag) {
         // projectFlag can be either be the projectID or "a" for all show projects e.q. no project filter
         // completedFlag can be "a" show all, "u" show uncompleted, "c" show completed
         let unfiltered = this.#allTodos;
@@ -257,30 +261,82 @@ class Todo {
     }
 
     static cacheDOM() {
-        const divFilterProjects = document.querySelector(".filterProjects");
-        const divFilterProjectsButtons = document.querySelector(".filterProjectsButtons");
-        const divFilterCompleted = document.querySelector(".filterCompleted");
-        const divFilterCompletedButtons = document.querySelector(".filterCompletedButtons");
-        const divCreate = document.querySelector(".create");
-        const divCreateButtons = document.querySelector(".createButtons");
-        const divTitleTodoList = document.querySelector(".titleTodoList");
-        const divTodoList = document.querySelector(".todoList");
-        return {divFilterProjects, 
-                divFilterProjectsButtons, 
-                divFilterCompleted, 
-                divFilterCompletedButtons, 
-                divCreate, 
-                divCreateButtons, 
-                divTitleTodoList, 
-                divTodoList}
+        const nodeSecondFilter = document.querySelector(".secondFilter"); // filter by project buttons will be appended here
+        const nodeListTitle = document.querySelector("#listTitle"); // textContent will be either Projects or Todos
+        const nodeListContainer = document.querySelector("#listContainer"); //todos or projects will be appended as list items
+
+        const nodeShowProjectsButton = document.querySelector("#showProjectsButton");
+        const nodeShowTodosButton = document.querySelector("#showTodosButton");
+
+        const nodeShowAllButton = document.querySelector("#showAllButton");
+        const nodeShowCompletedButton = document.querySelector("#showCompletedButton");
+        const nodeShowUncompletedButton = document.querySelector("#showUncompletedButton");
+
+        return {nodeSecondFilter, 
+                nodeListTitle, 
+                nodeListContainer,
+                nodeShowProjectsButton,
+                nodeShowTodosButton,
+                nodeShowAllButton,
+                nodeShowCompletedButton,
+                nodeShowUncompletedButton}
     }
 
-    static render() {
-        // const DOM = this.cacheDOM();
-        // this.drawFilterProjects(DOM);
+    static staticButtonLogic() {
+        document.addEventListener('click', function (event) {
+            if (event.target.matches('#showProjectsButton')) {
+                Todo.render(Todo.#allProjects, "project");
+            }
+            if (event.target.matches('#showTodosButton')) {
+                Todo.render(Todo.#allTodos, "todos");
+            }
+            if (event.target.matches('.buttonMenu')) {
+                clearPage();
+                menu();
+            }
+            if (event.target.matches('.buttonContact')) {
+                clearPage();
+                contact();
+            }
+        }, false);
     }
 
-    static drawFilterProjects(DOM) {
+    static render(list, type) {
+        this.clearDOMList();
+        let ulNode = document.createElement("ul");
+        if (type === "project") {
+            for (const property in list) {
+                let liNode = document.createElement("li");
+                let textNode = document.createTextNode(list[property]);
+                liNode.appendChild(textNode);
+                liNode.setAttribute("id", type + property);
+                ulNode.appendChild(liNode);
+                console.log(ulNode);
+                // console.log("hello");
+            }
+        }
+        if (type === "todos") {
+            for (const property in list) {
+                let liNode = document.createElement("li");
+                let textNode = document.createTextNode(list[property]["myTitle"]);
+                liNode.appendChild(textNode);
+                liNode.setAttribute("id", type + property);
+                ulNode.appendChild(liNode);
+                console.log(ulNode);
+                // console.log("hello");
+            }
+        }
+        this.#DOM.nodeListContainer.appendChild(ulNode);
+    }
+
+    static clearDOMList() {
+        const content = document.querySelector("#listContainer");
+        while (content.firstChild) {
+            content.removeChild(content.firstChild);
+        }
+    }
+
+    // static drawFilterProjects(DOM) {
         // let list = document.createElement("li");
         // let button = document.createElement("button");
         // let textNode = document.createTextNode("Test");
@@ -292,7 +348,7 @@ class Todo {
         // DOM.divFilterProjectsButtons.appendChild(list);
 
         // loop through array for each button
-    }
+    // }
 
 
 
