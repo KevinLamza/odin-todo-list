@@ -26,24 +26,28 @@ class Todo {
             this.createProject("Default");
         }
         // this.createProject("Default");
+
+        // DEV
+        this.logAllProjects();
+        this.logAllTodos();
     }
 
     static createProject(title) {
-        this.#allProjects[this.#projectCounter++] = title;
-        this.saveToStorage();
+        if(this.#isValidInput(title, "typeOfTitle")) {
+            this.#allProjects[this.#projectCounter++] = title;
+            this.saveToStorage();
+        }
     }
 
     static editProjectTitle(projectID, newTitle) {
-        if (typeof newTitle === "string") {
+        if (this.#isValidInput(newTitle, "typeOfTitle")) {
             if (projectID in this.#allProjects) {
                 this.#allProjects[projectID] = newTitle;
                 this.saveToStorage();
             } else {
                 console.log("There is no project with this ID");
             }
-        } else {
-            console.log("Invalid input - New title needs to be a string!");
-        }
+        };
     }
 
     static deleteProject(projectID) {
@@ -60,13 +64,17 @@ class Todo {
     }
 
     static createTodo(title = "No title", description = "No description", dueDate = "31/12/2999", priority = 4, projectID = 0) {
-        if (!(projectID in this.#allProjects)) {
-            projectID = 0;
+        if((this.#isValidInput(title, "typeOfTitle"))
+            && (this.#isValidInput(description, "typeOfDescription"))
+            && (this.#isValidInput(dueDate, "typeOfDate"))
+            && (this.#isValidInput(priority, "typeOfPriority"))){
+                if (!(projectID in this.#allProjects)) {
+                    projectID = 0;
+                }
+                let todo = new Todo (title, description, dueDate, priority, projectID);
+                this.#allTodos[todo.myTodoID] = todo;
+                this.saveToStorage();
         }
-        let todo = new Todo (title, description, dueDate, priority, projectID);
-        this.#allTodos[todo.myTodoID] = todo;
-        this.saveToStorage();
-        return todo;
     }
 
     static deleteTodo(todoID) {
@@ -98,6 +106,10 @@ class Todo {
         let projectData = this.#allProjects;
         projectData = JSON.stringify(projectData);
         localStorage.setItem("projectData", projectData);
+
+        // DEV
+        this.logAllProjects();
+        this.logAllTodos();
     }
 
     static loadFromStorage() {
@@ -113,10 +125,12 @@ class Todo {
         this.#projectCounter = 0;
         this.#allTodos = {};
         this.#allProjects = {};
+        this.createProject("Default");
+        this.saveToStorage();
     }
 
     static #isValidInput(input, inputType) {
-        if ((inputType === "typeOfString") || (inputType === "all")) {
+        if ((inputType === "typeOfTitle") || (inputType === "typeOfDescription") || (inputType === "checkAll")) {
             if (typeof input === "string") {
                 return true
             } else {
@@ -124,7 +138,7 @@ class Todo {
                 return false
             }
         }
-        if ((inputType === "typeOfDate") || (inputType === "all")) {
+        if ((inputType === "typeOfDate") || (inputType === "checkAll")) {
             let checkDate = new Date(input);
             if (checkDate.getTime() === checkDate.getTime()) {
                 return true
@@ -133,7 +147,7 @@ class Todo {
                 return false
             }
         }
-        if ((inputType === "typeOfPriority") || (inputType === "all")) {
+        if ((inputType === "typeOfPriority") || (inputType === "checkAll")) {
             if ((input === 4) || (input === 3) || (input === 2) || (input === 1)) {
                 return true
             } else {
@@ -141,7 +155,7 @@ class Todo {
                 return false
             }
         }
-        if ((inputType === "typeOfBoolean") || (inputType === "all")) {
+        if ((inputType === "typeOfBoolean") || (inputType === "checkAll")) {
             if (typeof input === "boolean") {
                 return true
             } else {
@@ -149,8 +163,65 @@ class Todo {
                 return false
             }
         }
+        if ((inputType === "typeOfProjectID") || (inputType === "checkAll")) {
+            if (input in this.#allProjects) {
+                return true
+            } else {
+                console.log("Invalid projectID!")
+                return false
+            }
+        }
     }
 
+    static createSamples() {
+        this.createProject("Project 1");
+        this.createProject("Project 2");
+        this.createProject("Project 3");
+        this.createTodo("Title 1", "Description 1", "10/10/1010", 1, 0 );
+        this.createTodo("Title 2", "Description 2", "10/10/1010", 2, 0 );
+        this.createTodo("Title 3", "Description 3", "10/10/1010", 3, 1 );
+        this.createTodo("Title 4", "Description 4", "10/10/1010", 4, 1 );
+        this.createTodo("Title 5", "Description 5", "10/10/1010", 1, 2 );
+        this.createTodo("Title 6", "Description 6", "10/10/1010", 2, 3 );
+    }
+
+    static filterTodos(projectFlag, completedFlag) {
+        // projectFlag can be either projectID or "a" for all show projects e.q. no project filter
+        // completedFlag can be "a" show all, "u" show uncompleted, "c" show completed
+        let unfiltered = this.#allTodos;
+        let firstFilter = {};
+        let secondFilter = {};
+        console.log(unfiltered);
+        // if else all
+        if (projectFlag === "all") {
+            firstFilter = unfiltered;
+        } else {
+            for (const property in unfiltered) {
+                console.log(`${property}: ${unfiltered[property]["myProjectID"]}`);
+                if (unfiltered[property]["myProjectID"] === projectFlag) {
+                    firstFilter[property] = unfiltered[property];
+                }
+            }
+        }
+        if (completedFlag === "a") {
+            secondFilter = firstFilter;
+            return secondFilter;
+        } else if (completedFlag === "u") {
+            for (const property in firstFilter) {
+                if (firstFilter[property]["myCompleted"] === false) {
+                    console.log(`${property}: ${firstFilter[property]["myCompleted"]}`);
+                    secondFilter[property] = firstFilter[property];
+                }
+            } return secondFilter;
+        } else if (completedFlag === "c") {
+            for (const property in firstFilter) {
+                if (firstFilter[property]["myCompleted"] === true) {
+                    console.log(`${property}: ${firstFilter[property]["myCompleted"]}`);
+                    secondFilter[property] = firstFilter[property];
+                }
+            } return secondFilter
+        }
+    }
     constructor(title, description, dueDate, priority, projectID) {
         this.myTitle = title;
         this.myDescription = description;
@@ -166,7 +237,7 @@ class Todo {
     }
 
     set title(newTitle) {
-        if (Todo.#isValidInput(newTitle, "typeOfString")) {
+        if (Todo.#isValidInput(newTitle, "typeOfTitle")) {
             this.myTitle = newTitle;
             Todo.saveToStorage();
         };
@@ -177,7 +248,7 @@ class Todo {
     }
     
     set description(newDescription) {
-        if (Todo.#isValidInput(newDescription, "typeOfString")) {
+        if (Todo.#isValidInput(newDescription, "typeOfDescription")) {
             this.myDescription = newDescription;
             Todo.saveToStorage();
         };
@@ -186,15 +257,6 @@ class Todo {
     get dueDate() {
         return this.myDueDate;
     }
-    
-    // set dueDate(newDueDate) {
-    //     if (Todo.#isDateValid(newDueDate === true)) {
-    //         this.myDueDate = new Date(newDueDate);
-    //         Todo.saveToStorage();
-    //     } else {
-    //         console.log("Invalid date!")
-    //     }
-    // }
 
     set dueDate(newDueDate) {
         if (Todo.#isValidInput(newDueDate, "typeOfDate")) {
@@ -231,8 +293,11 @@ class Todo {
         return this.myProjectID;
     }
     
-    set projectID(newDescription) {
-        // logic tbd
+    set projectID(newProjectID) {
+        if (Todo.#isValidInput(newProjectID, "typeOfProjectID")) {
+            this.myProjectID = newProjectID;
+            Todo.saveToStorage();
+        };
     }
 
     logMe() {
