@@ -10,6 +10,10 @@ class Todo {
 
     static #DOM = {};
 
+    static #lastProjectFilter = "all";
+    static #lastShowCompletedFilter = "a";
+    static #showTodosFilter = false;
+
     // STATIC METHODS
     // init(): check first on start up if all properties can be loaded from local storage
     // if no (= null), then reset them to zero / empty object respectively
@@ -228,15 +232,18 @@ class Todo {
 
         // second filter is the "completed" filter
         let secondFilter = {};
-        console.log(unfiltered);
-
+        // console.log(unfiltered);
+        console.log("hello");
         if (projectFlag === "all") {
             firstFilter = unfiltered;
+            console.log("hello again");
         } else {
             for (const property in unfiltered) {
-                console.log(`${property}: ${unfiltered[property]["myProjectID"]}`);
-                if (unfiltered[property]["myProjectID"] === projectFlag) {
+                console.log(unfiltered[property]["myProjectID"]);
+                console.log(projectFlag);
+                if (unfiltered[property]["myProjectID"] == projectFlag) {
                     firstFilter[property] = unfiltered[property];
+                    console.log(firstFilter);
                     // the resulting firstFilter will be used as input for the second filter
                 }
             }
@@ -247,14 +254,14 @@ class Todo {
         } else if (completedFlag === "u") {
             for (const property in firstFilter) {
                 if (firstFilter[property]["myCompleted"] === false) {
-                    console.log(`${property}: ${firstFilter[property]["myCompleted"]}`);
+                    // console.log(`${property}: ${firstFilter[property]["myCompleted"]}`);
                     secondFilter[property] = firstFilter[property];
                 }
             } return secondFilter;
         } else if (completedFlag === "c") {
             for (const property in firstFilter) {
                 if (firstFilter[property]["myCompleted"] === true) {
-                    console.log(`${property}: ${firstFilter[property]["myCompleted"]}`);
+                    // console.log(`${property}: ${firstFilter[property]["myCompleted"]}`);
                     secondFilter[property] = firstFilter[property];
                 }
             } return secondFilter
@@ -299,6 +306,18 @@ class Todo {
                 Todo.renderList(Todo.#allTodos, "todos");
                 Todo.renderFilter("add");
             }
+            if (event.target.matches('#showAllButton')) {
+                Todo.renderList(Todo.#filterTodos(Todo.#lastProjectFilter, "a"), "todos");
+                Todo.#lastShowCompletedFilter = "a";
+            }
+            if (event.target.matches('#showCompletedButton')) {
+                Todo.renderList(Todo.#filterTodos(Todo.#lastProjectFilter, "c"), "todos");
+                Todo.#lastShowCompletedFilter = "c";
+            }
+            if (event.target.matches('#showUncompletedButton')) {
+                Todo.renderList(Todo.#filterTodos(Todo.#lastProjectFilter, "u"), "todos");
+                Todo.#lastShowCompletedFilter = "u";
+            }
         }, false);
     }
 
@@ -312,7 +331,7 @@ class Todo {
                 liNode.appendChild(textNode);
                 liNode.setAttribute("id", type + property);
                 ulNode.appendChild(liNode);
-                console.log(ulNode);
+                // console.log(ulNode);
                 // console.log("hello");
             }
         }
@@ -323,7 +342,7 @@ class Todo {
                 liNode.appendChild(textNode);
                 liNode.setAttribute("id", type + property);
                 ulNode.appendChild(liNode);
-                console.log(ulNode);
+                // console.log(ulNode);
                 // console.log("hello");
             }
         }
@@ -331,7 +350,7 @@ class Todo {
     }
 
     static renderFilter(flag) {
-        if (flag === "add") {
+        if (flag === "add" && Todo.#showTodosFilter === false) {
             let buttonNode = document.createElement("button");
             let textNode = document.createTextNode("Show All");
             buttonNode.appendChild(textNode);
@@ -349,10 +368,46 @@ class Todo {
             buttonNode3.appendChild(textNode3);
             buttonNode3.setAttribute("id", "showUncompletedButton");
             Todo.#DOM.nodeFirstFilter.appendChild(buttonNode3);
+
+            let buttonNodeFilterAllProjects = document.createElement("button");
+            let textNodeFilterAllProjects = document.createTextNode("All Projects");
+            buttonNodeFilterAllProjects.appendChild(textNodeFilterAllProjects);
+            buttonNodeFilterAllProjects.setAttribute("id", "filterAllProjects");
+            Todo.#DOM.nodeSecondFilter.appendChild(buttonNodeFilterAllProjects);
+            document.addEventListener('click', function (event) {
+                if (event.target.matches('#filterAllProjects')) {
+                    Todo.renderList(Todo.#filterTodos("all", Todo.#lastShowCompletedFilter), "todos");
+                    Todo.#lastProjectFilter = "all";
+                }
+            }, false);
+
+            for (const property in Todo.#allProjects) {
+                let buttonNode = document.createElement("button");
+                let textNode = document.createTextNode(Todo.#allProjects[property]);
+                console.log(textNode);
+                buttonNode.appendChild(textNode);
+                buttonNode.setAttribute("id", `project${property}Button`);
+                Todo.#DOM.nodeSecondFilter.appendChild(buttonNode);
+                document.addEventListener('click', function (event) {
+                    if (event.target.matches(`#project${property}Button`)) {
+                        const obj = Todo.#filterTodos(property, Todo.#lastShowCompletedFilter);
+                        console.log(property);
+                        console.log(obj);
+                        Todo.renderList(obj, "todos");
+                        Todo.#lastProjectFilter = property;
+                    }
+                }, false);
+            }
+            Todo.#showTodosFilter = true;
+
         } else if (flag === "remove") {
             while (Todo.#DOM.nodeFirstFilter.firstChild) {
                 Todo.#DOM.nodeFirstFilter.removeChild(Todo.#DOM.nodeFirstFilter.firstChild);
-        }
+            }
+            while (Todo.#DOM.nodeSecondFilter.firstChild) {
+                Todo.#DOM.nodeSecondFilter.removeChild(Todo.#DOM.nodeSecondFilter.firstChild);
+            }
+            Todo.#showTodosFilter = false;
         }
     }
 

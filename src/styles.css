@@ -124,7 +124,7 @@ p, h1, h2, h3, h4, h5, h6 {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 .firstFilter > button, .secondFilter > button {
