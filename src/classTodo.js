@@ -233,17 +233,17 @@ class Todo {
         // second filter is the "completed" filter
         let secondFilter = {};
         // console.log(unfiltered);
-        console.log("hello");
+        // console.log("hello");
         if (projectFlag === "all") {
             firstFilter = unfiltered;
             console.log("hello again");
         } else {
             for (const property in unfiltered) {
-                console.log(unfiltered[property]["myProjectID"]);
-                console.log(projectFlag);
+                // console.log(unfiltered[property]["myProjectID"]);
+                // console.log(projectFlag);
                 if (unfiltered[property]["myProjectID"] == projectFlag) {
                     firstFilter[property] = unfiltered[property];
-                    console.log(firstFilter);
+                    // console.log(firstFilter);
                     // the resulting firstFilter will be used as input for the second filter
                 }
             }
@@ -384,15 +384,15 @@ class Todo {
             for (const property in Todo.#allProjects) {
                 let buttonNode = document.createElement("button");
                 let textNode = document.createTextNode(Todo.#allProjects[property]);
-                console.log(textNode);
+                // console.log(textNode);
                 buttonNode.appendChild(textNode);
                 buttonNode.setAttribute("id", `project${property}Button`);
                 Todo.#DOM.nodeSecondFilter.appendChild(buttonNode);
                 document.addEventListener('click', function (event) {
                     if (event.target.matches(`#project${property}Button`)) {
                         const obj = Todo.#filterTodos(property, Todo.#lastShowCompletedFilter);
-                        console.log(property);
-                        console.log(obj);
+                        // console.log(property);
+                        // console.log(obj);
                         Todo.renderList(obj, "todos");
                         Todo.#lastProjectFilter = property;
                     }
