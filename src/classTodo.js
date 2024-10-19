@@ -30,7 +30,7 @@ class Todo {
             console.log("Couldn't load projects!");
             this.createProject("Default");
         }
-        this.cacheDOM();
+        this.render();
 
         // only for debugging purposes, can be removed
         this.logAllProjects();
@@ -258,14 +258,43 @@ class Todo {
 
     static cacheDOM() {
         const divFilterProjects = document.querySelector(".filterProjects");
+        const divFilterProjectsButtons = document.querySelector(".filterProjectsButtons");
         const divFilterCompleted = document.querySelector(".filterCompleted");
+        const divFilterCompletedButtons = document.querySelector(".filterCompletedButtons");
+        const divCreate = document.querySelector(".create");
         const divCreateButtons = document.querySelector(".createButtons");
+        const divTitleTodoList = document.querySelector(".titleTodoList");
         const divTodoList = document.querySelector(".todoList");
+        return {divFilterProjects, 
+                divFilterProjectsButtons, 
+                divFilterCompleted, 
+                divFilterCompletedButtons, 
+                divCreate, 
+                divCreateButtons, 
+                divTitleTodoList, 
+                divTodoList}
     }
 
     static render() {
-        
+        // const DOM = this.cacheDOM();
+        // this.drawFilterProjects(DOM);
     }
+
+    static drawFilterProjects(DOM) {
+        // let list = document.createElement("li");
+        // let button = document.createElement("button");
+        // let textNode = document.createTextNode("Test");
+        // button.appendChild(textNode);
+        // button.setAttribute("bla", "bla2");
+        // list.appendChild(button);
+        // list.appendChild(button);
+        // list.appendChild(button);
+        // DOM.divFilterProjectsButtons.appendChild(list);
+
+        // loop through array for each button
+    }
+
+
 
     constructor(title, description, dueDate, priority, projectID) {
         this.myTitle = title;
