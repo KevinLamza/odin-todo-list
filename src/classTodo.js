@@ -50,12 +50,30 @@ class Todo {
         };
     }
 
-    static deleteProject(projectID) {
-        if (projectID in this.#allProjects) {
-            delete this.#allProjects[projectID];
-            this.saveToStorage();
+    static deleteProject(projectID, deleteOrphans) {
+        if (projectID == 1) {
+            console.log("Default Project can't be deleted");
+            return
         } else {
-            console.log("There is no project with this ID");
+            if (projectID in this.#allProjects) {
+                delete this.#allProjects[projectID];
+                if (deleteOrphans === true) {
+                    for (const property in this.#allTodos) {
+                        if (this.#allTodos[property]["myProjectID"] == projectID) {
+                            delete this.#allTodos[property];
+                        }
+                    }                     
+                } else if (deleteOrphans === false) {
+                    for (const property in this.#allTodos) {
+                        if (this.#allTodos[property]["myProjectID"] == projectID) {
+                            this.#allTodos[property]["myProjectID"] = 0;
+                        }
+                    }  
+                }
+                this.saveToStorage();
+            } else {
+                console.log("There is no project with this ID");
+            }
         }
     }
 

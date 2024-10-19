@@ -19,6 +19,12 @@ let myApp = Todo;
 // myApp.reset();
 myApp.init();
 // myApp.createSamples();
+// myApp.logAllTodos();
+// myApp.createProject("Project 2");
+// myApp.createProject("Project 3");
+// myApp.deleteProject(1, true);
+myApp.logAllProjects();
+myApp.logAllTodos();
 
-let filtered = myApp.filterTodos(0,"a");
-console.log(filtered);
+// let filtered = myApp.filterTodos(0,"a");
+// console.log(filtered);
