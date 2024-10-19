@@ -30,6 +30,7 @@ class Todo {
             console.log("Couldn't load projects!");
             this.createProject("Default");
         }
+        this.cacheDOM();
 
         // only for debugging purposes, can be removed
         this.logAllProjects();
@@ -254,6 +255,18 @@ class Todo {
             } return secondFilter
         }
     }
+
+    static cacheDOM() {
+        const divFilterProjects = document.querySelector(".filterProjects");
+        const divFilterCompleted = document.querySelector(".filterCompleted");
+        const divCreateButtons = document.querySelector(".createButtons");
+        const divTodoList = document.querySelector(".todoList");
+    }
+
+    static render() {
+        
+    }
+
     constructor(title, description, dueDate, priority, projectID) {
         this.myTitle = title;
         this.myDescription = description;
