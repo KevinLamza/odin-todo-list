@@ -33,8 +33,8 @@ class Todo {
             this.createProject("Default");
         }
         this.#DOM = this.cacheDOM();
-        this.staticButtonLogic();
-        this.render();
+        this.buttonLogic();
+        this.renderList(this.#allTodos, "todos");
 
         // only for debugging purposes, can be removed
         this.logAllProjects();
@@ -158,6 +158,7 @@ class Todo {
         this.#allProjects = {};
         this.createProject("Default");
         this.saveToStorage();
+        this.renderList(this.#allTodos, "todos");
     }
 
     static #isValidInput(input, inputType) {
@@ -261,6 +262,7 @@ class Todo {
     }
 
     static cacheDOM() {
+        const nodeFirstFilter = document.querySelector(".firstFilter");
         const nodeSecondFilter = document.querySelector(".secondFilter"); // filter by project buttons will be appended here
         const nodeListTitle = document.querySelector("#listTitle"); // textContent will be either Projects or Todos
         const nodeListContainer = document.querySelector("#listContainer"); //todos or projects will be appended as list items
@@ -272,7 +274,8 @@ class Todo {
         const nodeShowCompletedButton = document.querySelector("#showCompletedButton");
         const nodeShowUncompletedButton = document.querySelector("#showUncompletedButton");
 
-        return {nodeSecondFilter, 
+        return {nodeFirstFilter,
+                nodeSecondFilter, 
                 nodeListTitle, 
                 nodeListContainer,
                 nodeShowProjectsButton,
@@ -282,26 +285,24 @@ class Todo {
                 nodeShowUncompletedButton}
     }
 
-    static staticButtonLogic() {
+    static buttonLogic() {
+        this.showButtonLogic();
+    }
+
+    static showButtonLogic() {
         document.addEventListener('click', function (event) {
             if (event.target.matches('#showProjectsButton')) {
-                Todo.render(Todo.#allProjects, "project");
+                Todo.renderList(Todo.#allProjects, "project");
+                Todo.renderFilter("remove");
             }
             if (event.target.matches('#showTodosButton')) {
-                Todo.render(Todo.#allTodos, "todos");
-            }
-            if (event.target.matches('.buttonMenu')) {
-                clearPage();
-                menu();
-            }
-            if (event.target.matches('.buttonContact')) {
-                clearPage();
-                contact();
+                Todo.renderList(Todo.#allTodos, "todos");
+                Todo.renderFilter("add");
             }
         }, false);
     }
 
-    static render(list, type) {
+    static renderList(list, type) {
         this.clearDOMList();
         let ulNode = document.createElement("ul");
         if (type === "project") {
@@ -327,6 +328,32 @@ class Todo {
             }
         }
         this.#DOM.nodeListContainer.appendChild(ulNode);
+    }
+
+    static renderFilter(flag) {
+        if (flag === "add") {
+            let buttonNode = document.createElement("button");
+            let textNode = document.createTextNode("Show All");
+            buttonNode.appendChild(textNode);
+            buttonNode.setAttribute("id", "showAllButton");
+            Todo.#DOM.nodeFirstFilter.appendChild(buttonNode);
+
+            let buttonNode2 = document.createElement("button");
+            let textNode2 = document.createTextNode("Show Completed");
+            buttonNode2.appendChild(textNode2);
+            buttonNode2.setAttribute("id", "showCompletedButton");
+            Todo.#DOM.nodeFirstFilter.appendChild(buttonNode2);
+
+            let buttonNode3 = document.createElement("button");
+            let textNode3 = document.createTextNode("Show Uncompleted");
+            buttonNode3.appendChild(textNode3);
+            buttonNode3.setAttribute("id", "showUncompletedButton");
+            Todo.#DOM.nodeFirstFilter.appendChild(buttonNode3);
+        } else if (flag === "remove") {
+            while (Todo.#DOM.nodeFirstFilter.firstChild) {
+                Todo.#DOM.nodeFirstFilter.removeChild(Todo.#DOM.nodeFirstFilter.firstChild);
+        }
+        }
     }
 
     static clearDOMList() {
