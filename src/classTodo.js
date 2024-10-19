@@ -30,12 +30,14 @@ class Todo {
 
     static createProject(title) {
         this.#allProjects[this.#projectCounter++] = title;
+        this.saveToStorage();
     }
 
     static editProjectTitle(projectID, newTitle) {
         if (typeof newTitle === "string") {
             if (projectID in this.#allProjects) {
                 this.#allProjects[projectID] = newTitle;
+                this.saveToStorage();
             } else {
                 console.log("There is no project with this ID");
             }
@@ -47,6 +49,7 @@ class Todo {
     static deleteProject(projectID) {
         if (projectID in this.#allProjects) {
             delete this.#allProjects[projectID];
+            this.saveToStorage();
         } else {
             console.log("There is no project with this ID");
         }
@@ -62,12 +65,14 @@ class Todo {
         }
         let todo = new Todo (title, description, dueDate, priority, projectID);
         this.#allTodos[todo.myTodoID] = todo;
+        this.saveToStorage();
         return todo;
     }
 
     static deleteTodo(todoID) {
         if (todoID in this.#allTodos) {
             delete this.#allTodos[projectID];
+            this.saveToStorage();
         } else {
             console.log("There is no todo with this ID");
         }
@@ -75,11 +80,6 @@ class Todo {
 
     static logAllTodos() {
         console.log(this.#allTodos);
-    }
-
-    static #isDateValid(date) {
-        let checkDate = new Date(date);
-        return checkDate.getTime() === checkDate.getTime();
     }
 
     static saveToStorage() {
@@ -115,6 +115,42 @@ class Todo {
         this.#allProjects = {};
     }
 
+    static #isValidInput(input, inputType) {
+        if ((inputType === "typeOfString") || (inputType === "all")) {
+            if (typeof input === "string") {
+                return true
+            } else {
+                console.log("Invalid input - needs to be a string!")
+                return false
+            }
+        }
+        if ((inputType === "typeOfDate") || (inputType === "all")) {
+            let checkDate = new Date(input);
+            if (checkDate.getTime() === checkDate.getTime()) {
+                return true
+            } else {
+                console.log("Invalid date!")
+                return false
+            }
+        }
+        if ((inputType === "typeOfPriority") || (inputType === "all")) {
+            if ((input === 4) || (input === 3) || (input === 2) || (input === 1)) {
+                return true
+            } else {
+                console.log("Invalid input - needs to be an integer from 1 to 4!")
+                return false
+            }
+        }
+        if ((inputType === "typeOfBoolean") || (inputType === "all")) {
+            if (typeof input === "boolean") {
+                return true
+            } else {
+                console.log("Invalid input - needs to be either true or false")
+                return false
+            }
+        }
+    }
+
     constructor(title, description, dueDate, priority, projectID) {
         this.myTitle = title;
         this.myDescription = description;
@@ -122,7 +158,7 @@ class Todo {
         this.myPriority = priority;
         this.myCompleted = false;
         this.myTodoID = Todo.#todoCounter++;
-        this.myProjectID = projectID; // <- muss noch angepasst werden; default project sollte 0 sein und auch existieren
+        this.myProjectID = projectID;
     }
 
     get title() {
@@ -130,11 +166,10 @@ class Todo {
     }
 
     set title(newTitle) {
-        if (typeof newTitle === "string") {
+        if (Todo.#isValidInput(newTitle, "typeOfString")) {
             this.myTitle = newTitle;
-        } else {
-            console.log("Invalid input - needs to be a string!")
-        }
+            Todo.saveToStorage();
+        };
     }
 
     get description() {
@@ -142,23 +177,30 @@ class Todo {
     }
     
     set description(newDescription) {
-        if (typeof newDescription === "string") {
+        if (Todo.#isValidInput(newDescription, "typeOfString")) {
             this.myDescription = newDescription;
-        } else {
-            console.log("Invalid input - needs to be a string!")
-        }
+            Todo.saveToStorage();
+        };
     }
 
     get dueDate() {
         return this.myDueDate;
     }
     
+    // set dueDate(newDueDate) {
+    //     if (Todo.#isDateValid(newDueDate === true)) {
+    //         this.myDueDate = new Date(newDueDate);
+    //         Todo.saveToStorage();
+    //     } else {
+    //         console.log("Invalid date!")
+    //     }
+    // }
+
     set dueDate(newDueDate) {
-        if (Todo.#isDateValid(newDueDate === true)) {
+        if (Todo.#isValidInput(newDueDate, "typeOfDate")) {
             this.myDueDate = new Date(newDueDate);
-        } else {
-            console.log("Invalid date!")
-        }
+            Todo.saveToStorage();
+        };
     }
 
     get priority() {
@@ -166,11 +208,10 @@ class Todo {
     }
     
     set priority(newPriority) {
-        if ((newPriority === 4) || (newPriority === 3) || (newPriority === 2) || (newPriority === 1)) {
+        if (Todo.#isValidInput(newPriority, "typeOfPriority")) {
             this.myPriority = newPriority;
-        } else {
-            console.log("Invalid input - needs to be an integer from 1 to 4!")
-        }
+            Todo.saveToStorage();
+        };
     }
 
     get completed() {
@@ -178,11 +219,10 @@ class Todo {
     }
     
     set completed(value) {
-        if (typeof value === "boolean") {
-        this.myCompleted = value;
-        } else {
-            console.log("Invalid input - either true or false requiered!")
-        }
+        if (Todo.#isValidInput(value, "typeOfBoolean")) {
+            this.myCompleted = value;
+            Todo.saveToStorage();
+        };
     }
 
     // getMyTodoID() {}
