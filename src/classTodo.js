@@ -1,11 +1,16 @@
 class Todo {
     // STATIC PROPERTIES
+    // each todo and project will have a unique ID they refer to
     static #todoCounter = 0;
     static #projectCounter = 0;
+
+    // todoID/projectID:todo-/project-object as key:property
     static #allTodos = {};
     static #allProjects = {};
 
     // STATIC METHODS
+    // init(): check first on start up if all properties can be loaded from local storage
+    // if no (= null), then reset them to zero / empty object respectively
     static init() {
         this.loadFromStorage();
         if (this.#todoCounter == null) {
@@ -25,9 +30,8 @@ class Todo {
             console.log("Couldn't load projects!");
             this.createProject("Default");
         }
-        // this.createProject("Default");
 
-        // DEV
+        // only for debugging purposes, can be removed
         this.logAllProjects();
         this.logAllTodos();
     }
@@ -51,12 +55,16 @@ class Todo {
     }
 
     static deleteProject(projectID, deleteOrphans) {
-        if (projectID == 1) {
+        // Default project (ID == 0) should not be deleted
+        if (projectID == 0) {
             console.log("Default Project can't be deleted");
             return
         } else {
+            // for all other project IDs, loop through the allProjects object and delete them
             if (projectID in this.#allProjects) {
                 delete this.#allProjects[projectID];
+                // depending on the deleteOrphans flag, all todos that have the project ID of the deleted project will
+                // either be deleted too or their project ID changed to the default project (id 0)
                 if (deleteOrphans === true) {
                     for (const property in this.#allTodos) {
                         if (this.#allTodos[property]["myProjectID"] == projectID) {
@@ -191,6 +199,7 @@ class Todo {
         }
     }
 
+    // just for debugging purposes to create some sample projects and todos - can be deleted
     static createSamples() {
         this.createProject("Project 1");
         this.createProject("Project 2");
@@ -204,13 +213,17 @@ class Todo {
     }
 
     static filterTodos(projectFlag, completedFlag) {
-        // projectFlag can be either projectID or "a" for all show projects e.q. no project filter
+        // projectFlag can be either be the projectID or "a" for all show projects e.q. no project filter
         // completedFlag can be "a" show all, "u" show uncompleted, "c" show completed
         let unfiltered = this.#allTodos;
+        
+        // first filter is the project filter
         let firstFilter = {};
+
+        // second filter is the "completed" filter
         let secondFilter = {};
         console.log(unfiltered);
-        // if else all
+
         if (projectFlag === "all") {
             firstFilter = unfiltered;
         } else {
@@ -218,6 +231,7 @@ class Todo {
                 console.log(`${property}: ${unfiltered[property]["myProjectID"]}`);
                 if (unfiltered[property]["myProjectID"] === projectFlag) {
                     firstFilter[property] = unfiltered[property];
+                    // the resulting firstFilter will be used as input for the second filter
                 }
             }
         }
