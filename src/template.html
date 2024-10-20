@@ -40,7 +40,50 @@
             <div class="rightColumn">
                 <div class="listsTitle"><span id="listTitle">My Projects / My Todos</span>
                     <button class="create" id="createProject">Create Project</button>
+                    <dialog id="dialogCreateProject">
+                        <h3>Add a new project</h3>
+                        <form class="formProject">
+                            <div class="formProject">
+                                <label for="projectFormTitle">Title:</label>
+                                <input type="text" id="projectFormTitle">
+                            </div>
+                            <button id="projectFormCancel">Cancel</button>
+                            <button id="projectFormSubmit">Submit book</button>
+                        </form>
+                    </dialog>
                     <button class="create" id="createTodo">Create Todo</button>
+                    <dialog id="dialogCreateTodo">
+                        <h3>Add a new todo</h3>
+                        <form class="formTodo">
+                            <div class="formTodoDiv">
+                                <label for="todoFormTitle">Title:</label>
+                                <input type="text" id="todoFormTitle">
+                                <label for="todoFormDescription">Description:</label>
+                                <input type="text" id="todoFormDescription">
+                                <label for="todoFormDueDate">Due Date:</label>
+                                <input type="date" id="todoFormDueDate">
+                            </div>
+                            <p>Set priority:</p>
+                                <div>
+                                    <input type="radio" id="todoFormPriority1" name="todoFormPriority" value=1 checked="checked">
+                                    <label for="todoFormPriority1">1</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="todoFormPriority2" name="todoFormPriority" value=2 >
+                                    <label for="todoFormPriority2">2</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="todoFormPriority3" name="todoFormPriority" value=3 >
+                                    <label for="todoFormPriority3">3</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="todoFormPriority4" name="todoFormPriority" value=4 >
+                                    <label for="todoFormPriority4">4</label>
+                                </div>
+                                <button id="todoFormCancel">Cancel</button>
+                                <button id="todoFormSubmit">Submit book</button>
+                        </form>
+                    </dialog>
                 </div>
                 <div class="lists" id="listContainer">
                     <ul>

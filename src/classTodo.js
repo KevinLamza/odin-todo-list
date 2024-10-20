@@ -48,6 +48,8 @@ class Todo {
     static createProject(title) {
         if(this.#isValidInput(title, "typeOfTitle")) {
             this.#allProjects[this.#projectCounter++] = title;
+            Todo.renderList(Todo.#allProjects, "project");
+            Todo.renderFilter("remove");
             this.saveToStorage();
         }
     }
@@ -108,6 +110,7 @@ class Todo {
                 }
                 let todo = new Todo (title, description, dueDate, priority, projectID);
                 this.#allTodos[todo.myTodoID] = todo;
+                Todo.renderList(Todo.#filterTodos(Todo.#lastProjectFilter, Todo.#lastShowCompletedFilter), "todos");
                 this.saveToStorage();
         }
     }
@@ -184,7 +187,7 @@ class Todo {
             }
         }
         if ((inputType === "typeOfPriority") || (inputType === "checkAll")) {
-            if ((input === 4) || (input === 3) || (input === 2) || (input === 1)) {
+            if ((input == 4) || (input == 3) || (input == 2) || (input == 1)) {
                 return true
             } else {
                 console.log("Invalid input - needs to be an integer from 1 to 4!")
@@ -281,6 +284,14 @@ class Todo {
         const nodeShowCompletedButton = document.querySelector("#showCompletedButton");
         const nodeShowUncompletedButton = document.querySelector("#showUncompletedButton");
 
+        const nodeCreateTodo = document.querySelector("#createTodo");
+        const nodeCreateProject = document.querySelector("#createProject");
+        const nodeCreateTodoDialog = document.querySelector("#dialogCreateTodo");
+        const nodeCreateProjectDialog = document.querySelector("#dialogCreateProject");
+        const nodeTodoFormSubmit = document.querySelector("#todoFormSubmit");
+        const nodeTodoFormCancel = document.querySelector("#todoFormCancel");
+
+
         return {nodeFirstFilter,
                 nodeSecondFilter, 
                 nodeListTitle, 
@@ -289,7 +300,13 @@ class Todo {
                 nodeShowTodosButton,
                 nodeShowAllButton,
                 nodeShowCompletedButton,
-                nodeShowUncompletedButton}
+                nodeShowUncompletedButton,
+                nodeCreateTodo,
+                nodeCreateProject,
+                nodeCreateTodoDialog,
+                nodeCreateProjectDialog,
+                nodeTodoFormSubmit,
+                nodeTodoFormCancel}
     }
 
     static buttonLogic() {
@@ -317,6 +334,39 @@ class Todo {
             if (event.target.matches('#showUncompletedButton')) {
                 Todo.renderList(Todo.#filterTodos(Todo.#lastProjectFilter, "u"), "todos");
                 Todo.#lastShowCompletedFilter = "u";
+            }
+            if (event.target.matches('#createTodo')) {
+                Todo.#DOM.nodeCreateTodoDialog.showModal();
+                
+            }
+            if (event.target.matches('#todoFormCancel')) {
+                Todo.#DOM.nodeCreateTodoDialog.close();
+            }
+            if (event.target.matches('#todoFormSubmit')) {
+                event.preventDefault();
+                let title = document.getElementById('todoFormTitle').value;
+                let description = document.getElementById('todoFormDescription').value;
+                let dueDate = document.getElementById('todoFormDueDate').value;
+                let priority = document.querySelector('input[name="todoFormPriority"]:checked').value;
+                console.log("");
+                Todo.createTodo(title,description,dueDate,priority,0);
+                Todo.#DOM.nodeCreateTodoDialog.close();
+                document.querySelector(".formTodo").reset();
+            }
+            if (event.target.matches('#createProject')) {
+                Todo.#DOM.nodeCreateProjectDialog.showModal();
+                
+            }
+            if (event.target.matches('#projectFormCancel')) {
+                Todo.#DOM.nodeCreateProjectDialog.close();
+            }
+            if (event.target.matches('#projectFormSubmit')) {
+                event.preventDefault();
+                let title = document.getElementById('projectFormTitle').value;
+                console.log("");
+                Todo.createProject(title);
+                Todo.#DOM.nodeCreateProjectDialog.close();
+                document.querySelector(".formProject").reset();
             }
         }, false);
     }
