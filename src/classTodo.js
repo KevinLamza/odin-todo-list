@@ -14,6 +14,8 @@ class Todo {
     static #lastShowCompletedFilter = "a";
     static #showTodosFilter = false;
 
+    static #lastExpansion = {};
+
     // STATIC METHODS
     // init(): check first on start up if all properties can be loaded from local storage
     // if no (= null), then reset them to zero / empty object respectively
@@ -315,6 +317,17 @@ class Todo {
 
     static showButtonLogic() {
         document.addEventListener('click', function (event) {
+            for (let i = 0; i < Todo.#todoCounter; i++) {
+                if (event.target.matches(`#T${i}`)) {
+                    console.log(i);
+                    Todo.renderList(Todo.#filterTodos(Todo.#lastProjectFilter, Todo.#lastShowCompletedFilter), "subTodo", i);
+                }
+            }
+            for (let i = 0; i < Todo.#projectCounter; i++) {
+                if (event.target.matches(`#P${i}`)) {
+                    console.log(i);
+                }
+            }
             if (event.target.matches('#showProjectsButton')) {
                 Todo.renderList(Todo.#allProjects, "project");
                 Todo.renderFilter("remove");
@@ -371,33 +384,91 @@ class Todo {
         }, false);
     }
 
-    static renderList(list, type) {
-        this.clearDOMList();
-        let ulNode = document.createElement("ul");
+    static renderList(list, type, target="") {
+        
         if (type === "project") {
+            this.clearDOMList();
+            let ulNode = document.createElement("ul");
             for (const property in list) {
                 let liNode = document.createElement("li");
                 let textNode = document.createTextNode(list[property]);
                 liNode.appendChild(textNode);
-                liNode.setAttribute("id", type + property);
+                liNode.setAttribute("id", "P" + property);
                 ulNode.appendChild(liNode);
                 // console.log(ulNode);
                 // console.log("hello");
             }
+            this.#DOM.nodeListContainer.appendChild(ulNode);
         }
         if (type === "todos") {
+            this.clearDOMList();
+            let ulNode = document.createElement("ul");
             for (const property in list) {
                 let liNode = document.createElement("li");
                 let textNode = document.createTextNode(list[property]["myTitle"]);
                 liNode.appendChild(textNode);
-                liNode.setAttribute("id", type + property);
+                liNode.setAttribute("id", "T" + list[property]["myTodoID"]);
                 ulNode.appendChild(liNode);
                 // console.log(ulNode);
                 // console.log("hello");
             }
+            this.#DOM.nodeListContainer.appendChild(ulNode);
         }
-        this.#DOM.nodeListContainer.appendChild(ulNode);
-    }
+        if (type === "subTodo") {
+            let todoNode = document.getElementById(`T${target}`);
+            console.log(todoNode.childElementCount);
+                if (todoNode.childElementCount == 0) {
+                    let ulNode = document.createElement("ul");
+                    let buttonNode;
+
+                    let liNode = document.createElement("li");
+                    let textNode = document.createTextNode(Todo.#allTodos[target]["myDescription"]);
+                    liNode.appendChild(textNode);
+                    liNode.setAttribute("class", "subBulletPoint");
+                    ulNode.appendChild(liNode);
+
+                    liNode = document.createElement("li");
+                    textNode = document.createTextNode("Due until: " + Todo.#allTodos[target]["myDueDate"]);
+                    liNode.appendChild(textNode);
+                    liNode.setAttribute("class", "subBulletPoint");
+                    ulNode.appendChild(liNode);
+
+                    liNode = document.createElement("li");
+                    textNode = document.createTextNode("Priority: " + Todo.#allTodos[target]["myPriority"]);
+                    liNode.appendChild(textNode);
+                    liNode.setAttribute("class", "subBulletPoint");
+                    ulNode.appendChild(liNode);
+
+                    liNode = document.createElement("li");
+                    buttonNode = document.createElement("button");
+                    buttonNode.setAttribute("class", "markComplete");
+                    buttonNode.setAttribute("id", `todo${target}MarkComplete`);
+                    textNode = document.createTextNode("Mark Complete");
+                    buttonNode.appendChild(textNode);
+                    liNode.appendChild(buttonNode);
+                    liNode.setAttribute("class", "subBulletPoint");
+                    ulNode.appendChild(liNode);
+
+                    console.log(`T${target}`);
+                    todoNode = document.getElementById(`T${target}`);
+                    console.log(todoNode);
+                    todoNode.appendChild(ulNode);
+                }
+                else if (todoNode.childElementCount > 0) {
+                    const content = document.getElementById(`T${target}`);
+                    for(let i=0;i<content.childNodes.length;i++)
+                        {
+                            if(content.childNodes[i].nodeType!=3)//not TEXT_NODE
+                            content.removeChild(content.childNodes[i--]);
+                        }
+                    }
+                }
+                
+
+                // console.log(ulNode);
+                // console.log("hello");
+            }        
+    
 
     static renderFilter(flag) {
         if (flag === "add" && Todo.#showTodosFilter === false) {
